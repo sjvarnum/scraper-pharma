@@ -1,3 +1,4 @@
+from datetime import datetime
 import random
 import time
 
@@ -37,5 +38,5 @@ df.rename(columns={'publishedDate': 'date',
                    'primaryTaxonomy.label': 'source',
                    'title': 'title',
                    'uri': 'link'}, inplace=True)
-
-df.to_csv('Fierce_Pharma_Articles.csv', index=False)
+datestamp = datetime.today().strftime('%Y%m%dT%H%M')
+df.to_csv(f'Fierce_Pharma_Articles_{datestamp}.csv', index=False)
