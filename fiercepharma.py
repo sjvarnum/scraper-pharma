@@ -38,8 +38,8 @@ df.rename(columns={'publishedDate': 'date',
                    'title': 'title',
                    'uri': 'link'}, inplace=True)
 df['source'] = 'www.fiercepharma.com'
-df['channel'] = df['channel'].str.lower()
-df['title'] = df['title'].str.lower()
+df.channel = df.channel.str.lower()
+df.title = df.title.str.lower()
 df.link = df.link.str.lower()
 df = df[['date', 'source', 'channel', 'title', 'link']]
 df.drop_duplicates(inplace=True)
