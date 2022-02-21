@@ -21,8 +21,7 @@ for page_num in range(1, 5):
               'sectionId': '33231',
               'limit': '1'}
 
-    response = requests.request(
-        'GET', url, headers=headers, data=payload, params=params)
+    response = requests.get(url, headers=headers, data=payload, params=params)
 
     data = response.json()
     for article in data['data']:
@@ -35,8 +34,14 @@ df = pd.json_normalize(res)
 
 df = df[['publishedDate', 'primaryTaxonomy.label', 'title', 'uri']]
 df.rename(columns={'publishedDate': 'date',
-                   'primaryTaxonomy.label': 'source',
+                   'primaryTaxonomy.label': 'channel',
                    'title': 'title',
                    'uri': 'link'}, inplace=True)
+df['source'] = 'www.fiercepharma.com'
+df['channel'] = df['channel'].str.lower()
+df['title'] = df['title'].str.lower()
+df.link = df.link.str.lower()
+df = df[['date', 'source', 'channel', 'title', 'link']]
+df.drop_duplicates(inplace=True)
 datestamp = datetime.today().strftime('%Y%m%dT%H%M')
 df.to_csv(f'Fierce_Pharma_Articles_{datestamp}.csv', index=False)
