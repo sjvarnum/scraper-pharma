@@ -27,14 +27,15 @@ for page_num in range(1, 5):
     for article in data['data']:
         res.append(article)
 
-    time.sleep(1)
+    n = random.randint(1, 5)
+    time.sleep(n)
 
 df = pd.json_normalize(res)
 
 df = df[['publishedDate', 'primaryTaxonomy.label', 'title', 'uri']]
-df.rename(columns={'publishedDate': 'Date',
-                   'primaryTaxonomy.label': 'Source',
-                   'title': 'Title',
-                   'uri': 'Link'}, inplace=True)
+df.rename(columns={'publishedDate': 'date',
+                   'primaryTaxonomy.label': 'source',
+                   'title': 'title',
+                   'uri': 'link'}, inplace=True)
 
-df.to_csv('fiercepharma.csv', index=False)
+df.to_csv('Fierce_Pharma_Articles.csv', index=False)
