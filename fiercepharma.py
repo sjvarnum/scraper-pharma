@@ -12,7 +12,7 @@ user_agents = [
 ]
 random_user_agent = random.choice(user_agents)
 
-res = []
+results = []
 for page_num in range(1, 5):
     url = f'https://www.fiercepharma.com/api/v1/fronts/node?_format=json&page={page_num}'
     payload = {}
@@ -25,12 +25,13 @@ for page_num in range(1, 5):
 
     data = response.json()
     for article in data['data']:
-        res.append(article)
+        article['publishedDate'] = article['publishedDate'].split('T')[0]
+        results.append(article)
 
     n = random.randint(1, 5)
     time.sleep(n)
 
-df = pd.json_normalize(res)
+df = pd.json_normalize(results)
 
 df = df[['publishedDate', 'primaryTaxonomy.label', 'title', 'uri']]
 df.rename(columns={'publishedDate': 'date',
