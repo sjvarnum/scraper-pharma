@@ -12,14 +12,47 @@ user_agents = [
 ]
 random_user_agent = random.choice(user_agents)
 
-results = []
-for page_num in range(1, 5):
-    url = f'https://www.fiercepharma.com/api/v1/fronts/node?_format=json&page={page_num}'
+
+def get_page_count():
+    """Load first page and get JSON data
+
+    Determine number of articles and pages. Divide the number of pages by 
+    the limit parameter in the URL. When scraping the JSON data, each page 
+    will display the number of articles per the limit. For example, if the 
+    limit is set to 100, then there will be 100 articles per page to get.
+
+    Keyword arguments:
+    argument -- description
+    Return: Total number of pages
+    """
+
+    url = f'https://www.fiercepharma.com/api/v1/fronts/node?_format=json&page=0'
     payload = {}
     headers = {'User-Agent': random_user_agent}
     params = {'sponsoredCount': '0',
               'sectionId': '33231',
               'limit': '1'}
+
+    response = requests.get(url, headers=headers, data=payload, params=params)
+
+    data = response.json()
+    page_count = data['pager']['pages']['total']
+    total_count = data['pager']['total']
+
+    return total_count
+
+
+total_count = get_page_count()
+pages = round((total_count/100))
+results = []
+for page_num in range(1, pages):
+    url = f'https://www.fiercepharma.com/api/v1/fronts/node?_format=json&page={page_num}'
+    print(url)
+    payload = {}
+    headers = {'User-Agent': random_user_agent}
+    params = {'sponsoredCount': '0',
+              'sectionId': '33231',
+              'limit': '100'}
 
     response = requests.get(url, headers=headers, data=payload, params=params)
 
