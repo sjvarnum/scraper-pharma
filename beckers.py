@@ -48,10 +48,6 @@ def file_output(output_filename, logger, channel, df):
     filename = f'{output_filename}_{channel}_{datestamp}.xlsx'
     df.to_excel(f'{filename}', index=False, encoding='utf-8')
     logger.info(f'{filename} created')
-    # df.to_excel(
-    #     f'Beckers_Articles_{channel}_{datestamp}.xlsx', index=False, encoding='utf-8')
-    # logger.info(
-    #     f'Excel file Beckers_Articles_{channel}_{datestamp}.xlsx created')
 
 
 def log():
@@ -79,7 +75,7 @@ def main(sources, output_filename, database, table):
     logger = log()
     service = Service('geckodriver.exe')
     options = webdriver.FirefoxOptions()
-    # options.add_argument('-headless')
+    options.add_argument('-headless')
 
     driver = webdriver.Firefox(service=service, options=options)
     for item in sources:
@@ -177,27 +173,27 @@ if __name__ == '__main__':
         'base_url': 'https://www.beckershospitalreview.com',
         'url': 'https://www.beckershospitalreview.com/pharmacy.html',
         'channel': 'pharmacy',
-        'pages': 2,
+        'pages': 15,
         'source': 'becker'
     },
         {
         'base_url': 'https://www.beckershospitalreview.com',
         'url': 'https://www.beckershospitalreview.com/legal-regulatory-issues.html',
         'channel': 'legal-regulatory-issues',
-        'pages': 2,
+        'pages': 15,
         'source': 'becker'
     },
         {
         'base_url': 'https://www.beckershospitalreview.com',
         'url': 'https://www.beckershospitalreview.com/oncology.html',
         'channel': 'oncology',
-        'pages': 2,
+        'pages': 15,
         'source': 'becker'
     },
         {'base_url': 'https://www.beckerspayer.com',
          'url': 'https://www.beckerspayer.com',
          'channel': 'payer',
-         'pages': 2,
+         'pages': 25,
          'source': 'becker'
          }
     ]
