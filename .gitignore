@@ -3,4 +3,5 @@ venv
 *.exe
 *.xlsx
 *.log
+*.ipynb
 *.ipynb_checkpoints
