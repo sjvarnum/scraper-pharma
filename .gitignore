@@ -7,3 +7,5 @@ venv
 *.ipynb
 *.ipynb_checkpoints
 *.sqlite
+fierce
+pharma
