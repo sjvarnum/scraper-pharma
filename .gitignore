@@ -8,3 +8,4 @@ venv
 *.ipynb
 *.ipynb_checkpoints
 *.sqlite
+__pycache__
