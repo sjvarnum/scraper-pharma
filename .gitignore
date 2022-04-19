@@ -9,3 +9,5 @@ venv
 *.ipynb_checkpoints
 *.sqlite
 __pycache__
+archive
+data_files
