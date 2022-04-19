@@ -169,31 +169,32 @@ def main(sources, output_filename, database, table):
 
 if __name__ == '__main__':
 
+    num_of_pages = 3
     sources = [{
         'base_url': 'https://www.beckershospitalreview.com',
         'url': 'https://www.beckershospitalreview.com/pharmacy.html',
         'channel': 'pharmacy',
-        'pages': 15,
+        'pages': num_of_pages,
         'source': 'becker'
     },
         {
         'base_url': 'https://www.beckershospitalreview.com',
         'url': 'https://www.beckershospitalreview.com/legal-regulatory-issues.html',
         'channel': 'legal-regulatory-issues',
-        'pages': 15,
+        'pages': num_of_pages,
         'source': 'becker'
     },
         {
         'base_url': 'https://www.beckershospitalreview.com',
         'url': 'https://www.beckershospitalreview.com/oncology.html',
         'channel': 'oncology',
-        'pages': 15,
+        'pages': num_of_pages,
         'source': 'becker'
     },
         {'base_url': 'https://www.beckerspayer.com',
          'url': 'https://www.beckerspayer.com',
          'channel': 'payer',
-         'pages': 25,
+         'pages': num_of_pages,
          'source': 'becker'
          }
     ]
