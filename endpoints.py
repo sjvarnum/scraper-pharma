@@ -86,14 +86,17 @@ def main(sources, output_filename, database, table):
 
     try:
         # Click the Channels nav link
+        logger.info('Clicking channel navigation link')
         sleep(random.randint(5, 10))
         driver.find_element(By.CLASS_NAME, 'epn_menu > ul > li > span').click()
 
         # Click the channel > all news dropdown link
+        logger.info('Clicking news navigation link')
         sleep(random.randint(5, 10))
         driver.find_element(
             By.CLASS_NAME, 'epn_menu > ul > li > ul > li').click()
     except e:
+        logger.info('Clicking channel > news navigation link error')
         raise(e)
 
     body = driver.page_source
