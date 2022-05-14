@@ -2,6 +2,7 @@ import logging
 import pandas as pd
 import random
 import sqlite3
+import winsound
 
 from datetime import datetime
 from requests_html import HTML
@@ -160,3 +161,12 @@ if __name__ == '__main__':
     }]
 
     main(sources, 'Statnews_Articles', 'db', 'statnews_articles')
+
+    freq = 100
+    dur = 50
+    
+    # loop iterates 5 times i.e, 5 beeps will be produced.
+    for i in range(0, 5):    
+        winsound.Beep(freq, dur)    
+        freq+= 100
+        dur+= 50

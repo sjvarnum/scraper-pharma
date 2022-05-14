@@ -2,6 +2,7 @@ import logging
 import pandas as pd
 import random
 import sqlite3
+import winsound
 
 from datetime import datetime
 from dateutil import parser
@@ -76,7 +77,7 @@ def main(sources, output_filename, database, table):
     logger = log()
     service = Service('geckodriver.exe')
     options = webdriver.FirefoxOptions()
-    options.add_argument('-headless')
+    # options.add_argument('-headless')
     base_url = 'https://www.endpts.com'
     url = 'https://www.endpts.com'
     driver = webdriver.Firefox(service=service, options=options)
@@ -102,8 +103,11 @@ def main(sources, output_filename, database, table):
     article_list = []
     for article in articles:
         title = article.find('h3', first=True).text.replace('\xad', '')
-        channel = article.find('.epn_byline > .epn_channel > a > span',
-                       first=True).text
+        try:
+            channel = article.find('.epn_byline > .epn_channel > a > span',
+                        first=True).text
+        except AttributeError:
+            None
         source = 'endpoints'
 
         link = article.find('h3 a', first=True).links.pop()
@@ -157,3 +161,12 @@ if __name__ == '__main__':
     }]
 
     main(sources, 'Endpoints_Articles', 'db', 'endpoints_articles')
+ 
+    freq = 100
+    dur = 50
+    
+    # loop iterates 5 times i.e, 5 beeps will be produced.
+    for i in range(0, 5):    
+        winsound.Beep(freq, dur)    
+        freq+= 100
+        dur+= 50

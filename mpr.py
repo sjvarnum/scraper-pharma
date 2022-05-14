@@ -2,12 +2,14 @@ import logging
 import pandas as pd
 import random
 import sqlite3
+import winsound
 
 from datetime import datetime
 from requests_html import HTML
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -146,3 +148,12 @@ if __name__ == '__main__':
     }]
 
     main(sources, 'MPR_Articles', 'db', 'mpr_articles')
+
+    freq = 100
+    dur = 50
+    
+    # loop iterates 5 times i.e, 5 beeps will be produced.
+    for i in range(0, 5):    
+        winsound.Beep(freq, dur)    
+        freq+= 100
+        dur+= 50
