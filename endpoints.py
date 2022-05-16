@@ -77,7 +77,7 @@ def main(sources, output_filename, database, table):
     logger = log()
     service = Service('geckodriver.exe')
     options = webdriver.FirefoxOptions()
-    # options.add_argument('-headless')
+    options.add_argument('-headless')
     base_url = 'https://www.endpts.com'
     url = 'https://www.endpts.com'
     driver = webdriver.Firefox(service=service, options=options)
