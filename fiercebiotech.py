@@ -82,24 +82,32 @@ def get_data(urls, base_url):
     return article_list
 
 
-
-
-
-
-def main(sources, output_filename, database, table):
+if __name__ == '__main__':
     logger = log()
 
-    list_of_urls = ['https://www.fiercebiotech.com/api/v1/fronts/3961?page=1']
+    base_url = 'https://www.fiercebiotech.com'
+    urls = ['https://www.fiercebiotech.com/api/v1/fronts/3961?page=1',
+            'https://www.fiercebiotech.com/api/v1/fronts/3961?page=2']
 
-    article_uuids = []
-    for url in list_of_urls: 
-        params = {'api_key': scraperapi_key, 'url': url}
-        response = requests.get('http://api.scraperapi.com/', params=urlencode(params))
-        print(response.text)
+    article_list = get_data(urls, base_url)
 
-        article_uuids.extend([i['uuid'] for i in response.json()['articles']])
+    articles = []
+    for article in article_list:
+        date = article['data']['attributes']['created'].split('T')[0]
+        source = base_url
+        channel = article['data']['attributes']['path']['alias'].split('/')[1].strip()
+        title = article['data']['attributes']['title']
+        link = f"{base_url}{article['data']['attributes']['path']['alias']}"
 
-
+        data = {
+                'date': date,
+                'source': source,
+                'channel': channel,
+                'title': title,
+                'link': link
+                }
+            
+        articles.append(data)
 
     df = pd.DataFrame(article_list)
     df.channel = df.channel.str.lower()
@@ -109,33 +117,19 @@ def main(sources, output_filename, database, table):
     df = df[['date', 'source', 'channel', 'title', 'link']]
     df.drop_duplicates(inplace=True)
 
+
+    output_filename = 'FierceBiotech_Articles'
+    database = 'db'
+    table = 'fiercebiotech_articles'
+
     file_output(output_filename, logger, channel, df)
     database_output(logger, df, database, table)
 
-
-if __name__ == '__main__':
-
-    list_of_urls = ['https://www.fiercebiotech.com/api/v1/fronts/3961?page=1',
-                    'https://www.fiercebiotech.com/api/v1/fronts/3961?page=2']
-
-    # num_of_pages = 3
-    sources = [{
-        'base_url': 'https://www.fiercebiotech.com',
-        'url': 'https://www.fiercebiotech.com',
-        'channel': None,
-        'pages': num_of_pages,
-        'source': 'fiercebiotech'
-    }
-    ]
-
-    main(sources=sources, output_filename='FierceBiotech_Articles',
-         database='db', table='fiercebiotech_articles')
-
-    # freq = 100
-    # dur = 50
+    freq = 100
+    dur = 50
     
-    # # loop iterates 5 times i.e, 5 beeps will be produced.
-    # for i in range(0, 5):    
-    #     winsound.Beep(freq, dur)    
-    #     freq+= 100
-    #     dur+= 50
+    # loop iterates 5 times i.e, 5 beeps will be produced.
+    for i in range(0, 5):    
+        winsound.Beep(freq, dur)    
+        freq+= 100
+        dur+= 50
