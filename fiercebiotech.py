@@ -47,17 +47,16 @@ def database_output(logger, df, database, table):
     con.close()
 
 
-def file_output(output_filename, logger, channel, df):
+def file_output(output_filename, logger, df):
     """sumary_line
 
     Keyword arguments:
     argument -- description
     Return: return_description
     """
-
     logger.info('Compiling all articles into Excel file')
     datestamp = datetime.today().strftime('%Y%m%dT%H%M')
-    filename = f'{output_filename}_{channel}_{datestamp}.xlsx'
+    filename = f'{output_filename}_{datestamp}.xlsx'
     df.to_excel(f'{filename}', index=False, encoding='utf-8')
     logger.info(f'{filename} created')
 
@@ -80,11 +79,10 @@ def get_data(urls, base_url):
     logger.info('Getting articles')
     article_list = []
     for article_url in article_urls:
-        sleep(random.randint(1, 5))
+        # sleep(random.randint(1, 5))
         params = {'api_key': scraperapi_key, 'url': article_url}
         response = requests.get('http://api.scraperapi.com/', params=urlencode(params))
         article_list.append(response.json())
-
     return article_list
 
 
@@ -92,7 +90,10 @@ if __name__ == '__main__':
     logger = log()
 
     base_url = 'https://www.fiercebiotech.com'
-    urls = ['https://www.fiercebiotech.com/api/v1/fronts/3961?page=1']
+    urls = ['https://www.fiercebiotech.com/api/v1/fronts/3961?page=1',
+            'https://www.fiercebiotech.com/api/v1/fronts/3961?page=2',
+            'https://www.fiercebiotech.com/api/v1/fronts/3961?page=3',
+            'https://www.fiercebiotech.com/api/v1/fronts/3961?page=4']
 
     logger.info('Getting data')
     article_list = get_data(urls, base_url)
@@ -128,8 +129,8 @@ if __name__ == '__main__':
     database = 'db'
     table = 'fiercebiotech_articles'
 
-    file_output(output_filename, logger, channel, df)
-    # database_output(logger, df, database, table)
+    file_output(output_filename, logger, df)
+    database_output(logger, df, database, table)
 
     freq = 100
     dur = 50
