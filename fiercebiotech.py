@@ -63,19 +63,25 @@ def file_output(output_filename, logger, channel, df):
 
 
 def get_data(urls, base_url):
+    logger = log()
+    
     scraperapi_key = os.getenv('scraperapi_key')
 
+    logger.info('Getting article uuids')
     article_uuids = []
     for url in urls: 
         params = {'api_key': scraperapi_key, 'url': url}
         response = requests.get('http://api.scraperapi.com/', params=urlencode(params))
         article_uuids.extend([i['uuid'] for i in response.json()['articles']])
 
-    article_urls = [f'{base_url}{i}' for i in article_uuids]    
+    logger.info('Getting article urls')
+    article_urls = [f'{base_url}/jsonapi/node/article/{i}' for i in article_uuids]
+
+    logger.info('Getting articles')
     article_list = []
     for article_url in article_urls:
         sleep(random.randint(1, 5))
-        params = {'api_key': scraperapi_key, 'url': url}
+        params = {'api_key': scraperapi_key, 'url': article_url}
         response = requests.get('http://api.scraperapi.com/', params=urlencode(params))
         article_list.append(response.json())
 
@@ -86,11 +92,12 @@ if __name__ == '__main__':
     logger = log()
 
     base_url = 'https://www.fiercebiotech.com'
-    urls = ['https://www.fiercebiotech.com/api/v1/fronts/3961?page=1',
-            'https://www.fiercebiotech.com/api/v1/fronts/3961?page=2']
+    urls = ['https://www.fiercebiotech.com/api/v1/fronts/3961?page=1']
 
+    logger.info('Getting data')
     article_list = get_data(urls, base_url)
 
+    logger.info('Parsing articles')
     articles = []
     for article in article_list:
         date = article['data']['attributes']['created'].split('T')[0]
@@ -109,7 +116,7 @@ if __name__ == '__main__':
             
         articles.append(data)
 
-    df = pd.DataFrame(article_list)
+    df = pd.DataFrame(articles)
     df.channel = df.channel.str.lower()
     df.title = df.title.str.lower()
     df.link = df.link.str.lower()
@@ -117,13 +124,12 @@ if __name__ == '__main__':
     df = df[['date', 'source', 'channel', 'title', 'link']]
     df.drop_duplicates(inplace=True)
 
-
     output_filename = 'FierceBiotech_Articles'
     database = 'db'
     table = 'fiercebiotech_articles'
 
     file_output(output_filename, logger, channel, df)
-    database_output(logger, df, database, table)
+    # database_output(logger, df, database, table)
 
     freq = 100
     dur = 50
