@@ -76,13 +76,25 @@ def get_data(urls, base_url):
     logger.info('Getting article urls')
     article_urls = [f'{base_url}/jsonapi/node/article/{i}' for i in article_uuids]
 
+    NUM_RETRIES = 3
+
     logger.info('Getting articles')
     article_list = []
     for article_url in article_urls:
-        # sleep(random.randint(1, 5))
+        logger.info(f'Getting artile {article_url}')
+        sleep(random.randint(1, 5))
         params = {'api_key': scraperapi_key, 'url': article_url}
-        response = requests.get('http://api.scraperapi.com/', params=urlencode(params))
-        article_list.append(response.json())
+        for _ in range(NUM_RETRIES):
+            try:
+                response = requests.get('http://api.scraperapi.com/', params=urlencode(params))
+                if response.status_code in [200, 404]:
+                    # escape for loop if the API returns a successful response
+                    break
+            except requests.exceptions.ConnectionError:
+                response = ''
+
+        if response.status_code == 200:
+            article_list.append(response.json())
     return article_list
 
 
@@ -93,7 +105,9 @@ if __name__ == '__main__':
     urls = ['https://www.fiercebiotech.com/api/v1/fronts/3961?page=1',
             'https://www.fiercebiotech.com/api/v1/fronts/3961?page=2',
             'https://www.fiercebiotech.com/api/v1/fronts/3961?page=3',
-            'https://www.fiercebiotech.com/api/v1/fronts/3961?page=4']
+            'https://www.fiercebiotech.com/api/v1/fronts/3961?page=4',
+            'https://www.fiercebiotech.com/api/v1/fronts/3961?page=5',
+            'https://www.fiercebiotech.com/api/v1/fronts/3961?page=6']
 
     logger.info('Getting data')
     article_list = get_data(urls, base_url)
