@@ -104,10 +104,8 @@ if __name__ == '__main__':
     base_url = 'https://www.fiercebiotech.com'
     urls = ['https://www.fiercebiotech.com/api/v1/fronts/3961?page=1',
             'https://www.fiercebiotech.com/api/v1/fronts/3961?page=2',
-            'https://www.fiercebiotech.com/api/v1/fronts/3961?page=3',
-            'https://www.fiercebiotech.com/api/v1/fronts/3961?page=4',
-            'https://www.fiercebiotech.com/api/v1/fronts/3961?page=5',
-            'https://www.fiercebiotech.com/api/v1/fronts/3961?page=6']
+            'https://www.fiercebiotech.com/api/v1/fronts/3961?page=3'
+            ]
 
     logger.info('Getting data')
     article_list = get_data(urls, base_url)

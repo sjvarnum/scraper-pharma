@@ -104,10 +104,7 @@ if __name__ == '__main__':
     base_url = 'https://www.fiercepharma.com'
     urls = ['https://www.fiercepharma.com/api/v1/fronts/3966?page=1',
             'https://www.fiercepharma.com/api/v1/fronts/3966?page=2',
-            'https://www.fiercepharma.com/api/v1/fronts/3966?page=3',
-            'https://www.fiercepharma.com/api/v1/fronts/3966?page=4',
-            'https://www.fiercepharma.com/api/v1/fronts/3966?page=5',
-            'https://www.fiercepharma.com/api/v1/fronts/3966?page=6'
+            'https://www.fiercepharma.com/api/v1/fronts/3966?page=3'
             ]
         
     # urls = ['https://www.fiercepharma.com/api/v1/fronts/3966?page=1']
