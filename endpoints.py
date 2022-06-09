@@ -96,12 +96,13 @@ def main(sources, output_filename, database, table):
         driver.find_element(
             By.CLASS_NAME, 'epn_menu > ul > li > ul > li').click()
     except e:
-        logger.info('Clicking channel > news navigation link error')
+        logger.error('Clicking channel > news navigation link error')
         raise(e)
 
     body = driver.page_source
     html = HTML(html=body)
 
+    logger.info('Begin getting and parsing pages')
     articles = html.find('.epn_white_box.epn_item')
     article_list = []
     for article in articles:
@@ -110,9 +111,10 @@ def main(sources, output_filename, database, table):
             channel = article.find('.epn_byline > .epn_channel > a > span',
                         first=True).text
         except AttributeError:
-            None
+            channel = ''
         source = 'endpoints'
 
+        logger.info('Getting next article page')
         link = article.find('h3 a', first=True).links.pop()
         driver.get(link)
         body = driver.page_source
