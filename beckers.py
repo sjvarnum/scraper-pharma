@@ -110,6 +110,14 @@ def main(sources, output_filename, database, table):
                 sleep(random.randint(1, 3))
             except NoSuchElementException:
                 logger.info('No pop up detected  - continuing')
+            try:
+                close_finance_popup = driver.find_element(
+                    By.CSS_SELECTOR, '.close-persistent-bar')
+                logger.info('Pop up found - closing it')
+                close_finance_popup.click()
+                sleep(random.randint(1, 3))
+            except NoSuchElementException:
+                logger.info('No pop up detected - continuing')
 
             body = driver.page_source
             html = HTML(html=body)
